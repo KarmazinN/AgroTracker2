@@ -1,0 +1,111 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:AgroTracker.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:views="clr-namespace:AgroTracker.Views"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+		x:DataType="vm:MainWindowViewModel"
+		x:Class="AgroTracker.Views.MainWindow"
+        Icon="/Assets/avalonia-logo.ico"
+        Title="AgroTracker">
+
+
+	<Grid RowDefinitions="Auto,*,Auto" ColumnDefinitions="180,*">
+
+		<!-- Верхнє меню -->
+		<Border Grid.Row="0" Grid.ColumnSpan="2" Background="LightGray" Height="40">
+			<TextBlock Text="🔷 AgroTracker - Панель керування"
+					   VerticalAlignment="Center"
+					   Margin="10,0"
+					   FontWeight="Bold"/>
+		</Border>
+
+		<!-- Ліва бокова панель -->
+		<Border Grid.Row="1" Grid.Column="0" Grid.RowSpan="2">
+			<ScrollViewer>
+					<ItemsControl ItemsSource="{Binding MenuItems}">
+						<ItemsControl.ItemTemplate>
+							<DataTemplate x:DataType="vm:MenuItem">
+								<StackPanel>
+									<!-- Кнопка для головного елементу -->
+									<Button Command="{Binding ToggleExpandCommand}" Height="50" Width="150">
+										<StackPanel Orientation="Horizontal">
+											<Image Source="{Binding Image}" Width="40" Height="40"/>
+										</StackPanel>
+									</Button>
+
+									<!-- Підменю -->
+									<ItemsControl ItemsSource="{Binding Items}" IsVisible="{Binding IsExpanded}">
+										<ItemsControl.ItemTemplate>
+											<DataTemplate x:DataType="vm:MenuItem">
+												<Button Command="{Binding NavigateCommand}" Height="50" Width="150" Padding="90,0,0,0">
+													<StackPanel Orientation="Horizontal">
+														<Image Source="{Binding Image}" Width="50" Height="50"/>
+													</StackPanel>
+												</Button>
+											</DataTemplate>
+										</ItemsControl.ItemTemplate>
+									</ItemsControl>
+								</StackPanel>
+							</DataTemplate>
+						</ItemsControl.ItemTemplate>
+					</ItemsControl>				
+			</ScrollViewer>
+		</Border>
+
+
+
+		<!-- Основний контент -->
+		<ContentControl Grid.Row="1" Grid.Column="1" Content="{Binding CurrentPage}" />
+
+		<!-- Футер -->
+		<Border Grid.Row="2" Grid.Column="1"
+				Background="#DCEAF5"
+				Padding="10"
+				Margin="0 5 5 5">
+
+			<Grid ColumnDefinitions="1*,1*,1*,1*" RowDefinitions="*,*" VerticalAlignment="Center">
+				<TextBlock Grid.Column="0"
+						   Text="Current:"
+						   VerticalAlignment="Center"
+						   HorizontalAlignment="Left"/>
+				<TextBlock Grid.Column="0" Grid.Row="1"
+						   Text="{Binding FooterCurrent}" FontWeight="Bold" FontSize="18" Foreground="Black"
+						   VerticalAlignment="Center"
+						   HorizontalAlignment="Left"/>
+
+
+				<TextBlock Grid.Column="1"
+						   Text="Units:"
+						   VerticalAlignment="Center"
+						   HorizontalAlignment="Left"/>
+				<TextBlock Grid.Column="1" Grid.Row="1"
+						   Text="{Binding FooterUnits}" FontWeight="Bold" FontSize="18" Foreground="Black"
+						   VerticalAlignment="Center"
+						   HorizontalAlignment="Left"/>
+
+
+				<TextBlock Grid.Column="2"
+						   Text="Width: "
+						   VerticalAlignment="Center"
+						   HorizontalAlignment="Center"/>
+				<TextBlock Grid.Column="2" Grid.Row="1"
+						   Text="{Binding FooterWidth}" FontWeight="Bold" FontSize="18" Foreground="Black"
+						   VerticalAlignment="Center"
+						   HorizontalAlignment="Center"/>
+
+				<Button Grid.Column="3" Grid.Row="0" Grid.RowSpan="2" HorizontalAlignment="Right">
+					<Image Source="avares://AgroTracker/Assets/img/OK64.png"
+						   Margin="0,0,0,0"
+					   Width="50"
+					   Height="50"
+					   HorizontalAlignment="Right"/>
+				</Button>
+
+			</Grid>
+		</Border>
+
+
+	</Grid>
+</Window>

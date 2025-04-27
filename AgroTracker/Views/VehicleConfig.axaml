@@ -1,0 +1,88 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="550"
+             xmlns:vm="clr-namespace:AgroTracker.ViewModels"
+             x:Class="AgroTracker.Views.VehicleConfig"
+             x:DataType="vm:VehicleConfigViewModel">
+	
+	<UserControl.Resources>
+		<DataTemplate x:Key="BrandTemplate" DataType="vm:BrandModel">
+			<Image Source="{Binding ImageSource}" Width="70"/>
+		</DataTemplate>
+	</UserControl.Resources>
+	
+	<Grid ColumnDefinitions="2*, 1*" RowDefinitions="1*, 1*, 1*">
+		<!-- Ліва частина -->
+		<TabControl ItemsSource="{Binding Tabs}"
+					SelectedItem="{Binding SelectedTab}"
+					Grid.Column="0" Grid.Row="0" Grid.RowSpan="3"
+					HorizontalAlignment="Stretch"
+					VerticalAlignment="Stretch">
+			<TabControl.ItemTemplate>
+				<DataTemplate>
+					<Image Source="{Binding HeaderImage}" Width="130"/>
+				</DataTemplate>
+			</TabControl.ItemTemplate>
+
+			<TabControl.ContentTemplate>
+				<DataTemplate x:DataType="vm:VehicleTabModel">
+					<ListBox ItemsSource="{Binding Brands}" ItemTemplate="{StaticResource BrandTemplate}" SelectedItem="{Binding SelectedBrand}" IsVisible="{Binding IsBrandsVisible}">
+						<ListBox.ItemsPanel>
+							<ItemsPanelTemplate>
+								<WrapPanel/>
+							</ItemsPanelTemplate>
+						</ListBox.ItemsPanel>
+					</ListBox>
+				</DataTemplate>
+			</TabControl.ContentTemplate>
+		</TabControl>
+		<!-- Контент 
+		<ContentControl Grid.Row="1" Grid.Column="0"  Grid.RowSpan="3" Background="#F8F8F8" Margin="10"/>-->
+
+
+		<!-- Права частина -->
+		<Border Grid.Column="1" Grid.Row="0" Padding="10">
+			<Button Command="{Binding ClearSelectedBrandCommand}" Padding="0" HorizontalAlignment="Center">
+				<StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+					<TextBlock Text="No Image:" FontWeight="Bold" FontSize="16" HorizontalAlignment="Center"/>
+					<Border BorderBrush="Black" BorderThickness="1" Padding="5" Margin="5">
+						<Image Source="avares://AgroTracker/Assets/img/Brand/BrandTriangleVehicle.png" Width="64" Height="64" />
+					</Border>
+				</StackPanel>
+			</Button>
+		</Border>
+
+		<Border Grid.Column="1" Grid.Row="1" Padding="10">
+			<Grid>
+				<Image Source="{Binding CanvasBackground}"
+					   Stretch="Uniform"
+					   HorizontalAlignment="Stretch"
+					   VerticalAlignment="Stretch" />
+
+				<Image Source="{Binding SelectedVehicleImage}"
+					   Opacity="{Binding Opacity}"
+					   Stretch="Uniform"
+					   HorizontalAlignment="Stretch"
+					   VerticalAlignment="Stretch" />
+			</Grid>
+		</Border>
+		<Border Grid.Column="1" Grid.Row="2" >
+			<StackPanel>
+				<!-- Значення Opacity -->
+				<TextBlock Text="Opacity" FontSize="18" FontWeight="Bold" HorizontalAlignment="Center"></TextBlock>
+
+				<!-- Кнопки -->
+				<StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="20">
+					<Button Content="🔽" Command="{Binding DecreaseOpacityCommand}" />
+					<TextBlock Text="{Binding Opacity, StringFormat='{}{0:P0}'}"
+						   FontSize="24" FontWeight="Bold"
+						   HorizontalAlignment="Center" />
+					<Button Content="🔼" Command="{Binding IncreaseOpacityCommand}" />
+				</StackPanel>
+			</StackPanel>
+		</Border>
+
+	</Grid>
+</UserControl>
